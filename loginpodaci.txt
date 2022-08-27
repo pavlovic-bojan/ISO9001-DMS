@@ -1,0 +1,8 @@
+User Name: admin
+Passwoed: 1234567+   administrator sajta
+
+User Name: admink
+Passwoed: 1234567+   administrator korisnik
+
+User Name: korisnik
+Passwoed: 1234567+   korisnik

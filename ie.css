@@ -1,0 +1,11 @@
+#header ul.nav li.active {
+margin:0;
+padding: 0px 5px 0px 5px;
+background:url(images/nav_corn_l.gif) no-repeat top left;
+}
+
+#header ul.nav {
+margin:0px 0 0 0;
+padding:15px 0 0 0;
+float:right;
+}

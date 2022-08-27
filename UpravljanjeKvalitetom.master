@@ -1,0 +1,160 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="UpravljanjeKvalitetom.master.cs" Inherits="UpravljanjeKvalitetom" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Upravljanje Kvalitetom</title>
+<link rel="shortcut icon" href="~/images/favicon.ico" />
+<link rel="icon" type="image/gif" href="~/images/animated_favicon1.gif" />
+<link rel="stylesheet" type="text/css" href="style.css"/>
+<link href="ie.css" rel="stylesheet" type="text/css" />
+<script src="js/ie6_script_other.js" type="text/javascript"></script>
+    <asp:ContentPlaceHolder id="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div id="topLine">
+  <div id="header">
+  <ul class="nav">
+        <asp:Menu ID="MenuGlavni" runat="server" DataSourceID="SiteMapDataSource1" 
+            Orientation="Horizontal" StaticDisplayLevels="2" CssClass="nav">
+        </asp:Menu>
+        <asp:SiteMapDataSource ID="SiteMapDataSource1" runat="server" />
+  </ul>    
+    <h1><span>||</span>QMS<span> ISO 9001</span></h1>
+  </div>
+</div>
+<div id="outerwarrper">
+  <div id="wrapper">
+    <div id="content">
+      <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+      <h2> Neka strana</h2>
+        <p>Neki tekst</p>
+      </asp:ContentPlaceHolder>
+    </div>
+    <div id="sidebar">
+    				<h3>Pretraga Nekretnina</h3>
+				<table style="width:90%;"><tr><td>Grad:</td><td>
+                    <asp:TextBox ID="TextBoxgrad" runat="server" ></asp:TextBox>
+                    </td><td>&nbsp;</td></tr><tr><td>Region:</td><td>
+                    <asp:TextBox ID="TextBoxregion" runat="server"></asp:TextBox>
+                    </td><td>&nbsp;</td></tr><tr><td>Kategorije:</td><td>
+                    <asp:DropDownList ID="DropDownListtip" runat="server" 
+                        DataSourceID="SqlDataSource1" DataTextField="naziv" 
+                        DataValueField="idKategorija">
+                    </asp:DropDownList>
+                    <asp:SqlDataSource ID="SqlDataSource1" runat="server" 
+                        ConnectionString="<%$ ConnectionStrings:VezaSaBazom %>" 
+                        SelectCommand="SELECT * FROM [Kategorija]"></asp:SqlDataSource>
+                    </td><td>
+                        <asp:CustomValidator ID="CustomValidatorpretraga" runat="server" 
+                            ControlToValidate="DropDownListtip" 
+                            ErrorMessage="Niste odabrali kategoriju željene nekretnine." 
+                            onservervalidate="CustomValidatorpretraga_ServerValidate1" 
+                            ValidationGroup="pretraga">*</asp:CustomValidator>
+                    </td></tr><tr><td>Cena od:</td><td>
+                        <asp:TextBox ID="TextBoxcenaod" runat="server"></asp:TextBox>
+                    </td><td>&nbsp;</td></tr><tr><td>Cena do:</td><td>
+                    <asp:TextBox ID="TextBoxcenado" runat="server"></asp:TextBox>
+                    </td><td>&nbsp;</td></tr><tr><td>Tražim za:</td><td>
+                    <asp:RadioButtonList ID="RadioButtonListtrazimza" runat="server" 
+                        DataSourceID="SqlDataSource2" DataTextField="naziv" DataValueField="idtrazi">
+                    </asp:RadioButtonList>
+                    <asp:SqlDataSource ID="SqlDataSource2" runat="server" 
+                        ConnectionString="<%$ ConnectionStrings:VezaSaBazom %>" 
+                        SelectCommand="SELECT * FROM [Trazi]"></asp:SqlDataSource>
+                    </td><td>
+                        <asp:RequiredFieldValidator ID="RequiredFieldValidatortrazi" runat="server" 
+                            ControlToValidate="RadioButtonListtrazimza" 
+                            ErrorMessage="Niste odabrali po kom poslu da Vam filtriramo i dostavimo spisak nekretnina." 
+                            ValidationGroup="pretraga">*</asp:RequiredFieldValidator>
+                    </td></tr><tr><td>&nbsp;</td><td>
+                    <asp:Button ID="Buttonpretraga" runat="server" 
+                        Font-Bold="False" Text="Pretraži" ValidationGroup="pretraga" />
+                    </td><td>&nbsp;</td></tr><tr><td colspan="3">
+                    <asp:ValidationSummary ID="ValidationSummary1" runat="server" 
+                        ValidationGroup="pretraga" />
+                    </td></tr></table>
+      <h3> Ulaz</h3>
+      <p>Ovaj deo je namenjen za ulaz korisnicima ovog sajta. </p>
+<asp:LoginView ID="LoginView1" runat="server">
+            <LoggedInTemplate>
+                Dobro došli,<asp:LoginName ID="LoginName1" runat="server" />
+                <asp:LoginStatus ID="LoginStatus1" runat="server" LogoutText="Izlaz" LogoutPageUrl="~/index.aspx" LogoutAction="Redirect" />
+            </LoggedInTemplate>
+            <AnonymousTemplate>
+                <asp:Login ID="Loginulaz" runat="server" DestinationPageUrl="~/index.aspx" FailureText="Niste se ulogovali Molimo Vas pokušajte ponovo." PasswordRequiredErrorMessage="Lozinka je obavezna." RememberMeText="Upamti me za sledeci put." UserNameRequiredErrorMessage="Korisničko ime je obavezno.">
+                    <TextBoxStyle CssClass="input" />
+                    <LoginButtonStyle CssClass="enter" />
+                    <LayoutTemplate>
+                        <table cellpadding="1" cellspacing="0" style="border-collapse:collapse;">
+                            <tr>
+                                <td>
+                                    <table cellpadding="0">
+                                        <tr>
+                                            <td align="right">
+                                                <asp:Label ID="UserNameLabel" runat="server" AssociatedControlID="UserName">Ime:</asp:Label>
+                                            </td>
+                                            <td>
+                                                <asp:TextBox ID="UserName" runat="server" CssClass="input"></asp:TextBox>
+                                                <asp:RequiredFieldValidator ID="UserNameRequired" runat="server" 
+                                                    ControlToValidate="UserName" ErrorMessage="Unesite Vaš mail." 
+                                                    ToolTip="Unesite Vaš mail." ValidationGroup="ctl00$ctl00$Login1">*</asp:RequiredFieldValidator>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right">
+                                                <asp:Label ID="PasswordLabel" runat="server" AssociatedControlID="Password">Lozinka:</asp:Label>
+                                            </td>
+                                            <td>
+                                                <asp:TextBox ID="Password" runat="server" CssClass="input" TextMode="Password"></asp:TextBox>
+                                                <asp:RequiredFieldValidator ID="PasswordRequired" runat="server" 
+                                                    ControlToValidate="Password" ErrorMessage="Unesite Vašu Lozinku." 
+                                                    ToolTip="Unesite Vašu Lozinku." ValidationGroup="ctl00$ctl00$Login1">*</asp:RequiredFieldValidator>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                <asp:CheckBox ID="RememberMe" runat="server" Text="Upamti me za sledeći put." />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center" colspan="2" style="color:Red;">
+                                                <asp:Literal ID="FailureText" runat="server" EnableViewState="False"></asp:Literal>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right" colspan="2">
+                                                <asp:Button ID="LoginButton" runat="server" CommandName="Login" 
+                                                    CssClass="button" Text="Ulaz" ValidationGroup="ctl00$ctl00$Login1" 
+                                                    Font-Bold="False" />
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </LayoutTemplate>
+                    <FailureTextStyle CssClass="login-error" />
+                </asp:Login>
+            </AnonymousTemplate>
+            </asp:LoginView>
+            <h3> Reklame</h3>
+            <p>Ako želite da se Vaš reklamni baner pojavljuje ispod pogledajte link 
+                <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/reklamiranje.aspx">Reklamiranje.</asp:HyperLink></p>
+        <asp:AdRotator ID="AdRotator1" runat="server" ClientIDMode="AutoID" 
+            CssClass="side" DataSourceID="XmlDataSource1" />
+        <asp:AdRotator ID="AdRotator2" runat="server" DataSourceID="XmlDataSource1" />
+        <asp:XmlDataSource ID="XmlDataSource1" runat="server" DataFile="~/reklame.xml">
+        </asp:XmlDataSource>
+     </div>
+  </div>
+</div>
+<div id="footer">
+  <p>Dizajn:<a href="Bojan/index.html"> Bojan Pavlović</a></p>
+</div>
+    </form>
+</body>
+</html>
